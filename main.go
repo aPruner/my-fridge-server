@@ -6,6 +6,5 @@ import (
 )
 
 func main() {
-	color.Cyan(quote.Hello())
-	gql.gqlTest()
+	color.Red(quote.Hello())
 }
