@@ -3,10 +3,14 @@ package gql
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-
 	"github.com/graphql-go/graphql"
+	"log"
+	"net/http"
 )
+
+func GraphQLRequestHandler(w http.ResponseWriter, r *http.Request)  {
+	w.Write([]byte(`hello world`))
+}
 
 func Test() {
 	// Schema

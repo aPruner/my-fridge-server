@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/aPruner/my-fridge-server/db"
+	"github.com/aPruner/my-fridge-server/server"
 	"github.com/joho/godotenv"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 )
@@ -27,4 +29,11 @@ func main() {
 	// Build the conn string from env vars
 	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbName)
 	fmt.Printf(connString)
+
+	gqlServer := server.Create()
+	err = http.ListenAndServe("localhost:3000", gqlServer)
+	if err != nil {
+		log.Fatalf("There was an error starting the server")
+	}
+
 }
