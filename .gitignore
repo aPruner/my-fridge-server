@@ -19,3 +19,6 @@
 
 # Output of server build scripts
 build/
+
+# Environment variables
+.env

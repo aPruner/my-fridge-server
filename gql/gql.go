@@ -8,7 +8,7 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func GqlTest() {
+func Test() {
 	// Schema
 	fields := graphql.Fields{
 		"hello": &graphql.Field{
