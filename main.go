@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/fatih/color"
+	"rsc.io/quote"
 )
 
 func main() {
-	fmt.Printf("Hello world!")
+	color.Cyan(quote.Hello())
+	gql.gqlTest()
 }
