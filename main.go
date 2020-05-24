@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/fatih/color"
-	"rsc.io/quote"
+	"github.com/aPruner/my-fridge-server/db"
+	"github.com/aPruner/my-fridge-server/gql"
 )
 
 func main() {
-	color.Red(quote.Hello())
+	gql.GqlTest()
+	db.PrintDB()
 }
