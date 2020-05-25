@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/aPruner/my-fridge-server/db"
+	"github.com/aPruner/my-fridge-server/gql"
 	"github.com/aPruner/my-fridge-server/server"
 	"github.com/joho/godotenv"
 	"log"
@@ -12,41 +12,34 @@ import (
 )
 
 func main() {
-	// TODO: Add server port and host to .env
+	// TODO: Add server port and host to .env instead of defaulting to localhost:3000
 	gqlServer := initServer()
 
-	err := http.ListenAndServe("localhost:3000", gqlServer)
-	if err != nil {
-		log.Fatalf("There was an error starting the server: #{err}")
-	}
-	log.Printf("Server is now listening on port 3000")
+	log.Fatal(http.ListenAndServe("localhost:3000", gqlServer))
 }
 
 func initServer() (gqlServer *server.Server) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading env variables: %v", err)
 	}
 
 	dbHostname := os.Getenv("DB_HOSTNAME")
 	dbPort, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		log.Fatalf("Error converting dbPort from string to int: #{err}")
+		log.Fatalf("Error converting DB_PORT env var to int: %v", err)
 	}
-
 	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	// Build the conn string from env vars
-	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbName)
+	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbPassword, dbName)
 
 	database, err := db.Create(connString)
-	_ = database
 	if err != nil {
-		log.Fatalf("Error creating database: #{err}")
+		log.Fatalf("Error creating the database: %v", err)
 	}
-	// TODO: Do stuff with the database here (create gql resolver with it)
-
-	gqlServer = server.Create()
+	gqlSchema := gql.CreateSchema(database)
+	gqlServer = server.Create(&gqlSchema)
 	return gqlServer
 }
