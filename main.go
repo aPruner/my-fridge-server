@@ -28,12 +28,14 @@ func main() {
 
 	// Build the conn string from env vars
 	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbName)
-	fmt.Printf(connString)
+	fmt.Println(connString)
 
 	gqlServer := server.Create()
+	// TODO: Add server port and host to .env
 	err = http.ListenAndServe("localhost:3000", gqlServer)
 	if err != nil {
 		log.Fatalf("There was an error starting the server")
 	}
+	log.Printf("Server is now listening on port 3000")
 
 }

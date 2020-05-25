@@ -9,7 +9,12 @@ import (
 )
 
 func GraphQLRequestHandler(w http.ResponseWriter, r *http.Request)  {
-	w.Write([]byte(`hello world`))
+	// TODO: Pipe status code through to logging middleware
+	bytesWritten, err := w.Write([]byte(`hello worlds`))
+	if err != nil {
+		log.Fatalf("There was an error writing the response")
+	}
+	log.Printf("Request received, wrote %d bytes to response", bytesWritten)
 }
 
 func Test() {
