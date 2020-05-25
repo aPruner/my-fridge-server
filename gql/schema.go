@@ -35,7 +35,7 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 						// Slice of User gql type
 						Type: graphql.NewList(User),
 						Args: graphql.FieldConfigArgument{
-							"name": &graphql.ArgumentConfig{
+							"username": &graphql.ArgumentConfig{
 								Type: graphql.String,
 							},
 						},

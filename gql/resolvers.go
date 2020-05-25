@@ -12,11 +12,12 @@ type Resolver struct {
 // UserResolver initiates db query to get a user
 func (r *Resolver) UserResolver(p graphql.ResolveParams) (interface{}, error) {
 	// Type-check the name
-	name, ok := p.Args["name"].(string)
+	username, ok := p.Args["username"].(string)
 	if ok {
-		_ = name
-		// users := r.database.GetUsersByName(name)
-		return nil, nil
+		_ = username
+		// TODO: Write this function and its respective query in the db package
+		// users := r.database.GetUsersByUsername(username)
+		return nil, nil // will need to return users, nil
 	}
 
 	return nil, nil
