@@ -3,15 +3,16 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 )
 
 type Db struct {
 	*sql.DB
 }
 
-func BuildConnString(host string, port int, user string, dbName string) string {
-	return fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable",
-		host, port, user, dbName)
+func BuildConnString(host string, port int, user string, password string ,dbName string) string {
+	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbName)
 }
 
 func Create(connString string) (*Db, error) {
