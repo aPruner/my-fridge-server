@@ -21,14 +21,14 @@ func GraphQLHandler(schema *graphql.Schema) http.HandlerFunc {
 		var rBody reqBody
 		err := json.NewDecoder(r.Body).Decode(&rBody)
 		if err != nil {
-			http.Error(w, "Error parsing JSON request body", 400)
+			http.Error(w, "Error parsing JSON request body, it was probably misformed", 400)
 			return
 		}
 
 		gqlResult := ExecuteGraphQLQuery(rBody.GqlQuery, *schema)
 		err = json.NewEncoder(w).Encode(gqlResult)
 		if err != nil {
-			log.Fatalf("There was an error writing the response")
+			log.Fatalf("There was an error writing the response: %v", err)
 		}
 	}
 }

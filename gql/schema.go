@@ -19,7 +19,7 @@ func CreateSchema(database *db.Db) graphql.Schema {
 		},
 	)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error creating schema: %v", err)
 	}
 	return schema
 }
@@ -29,8 +29,10 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 	baseQuery := BaseQuery{
 		Query: graphql.NewObject(
 			graphql.ObjectConfig{
+				Name: "Query",
 				Fields: graphql.Fields{
 					"users": &graphql.Field{
+						// Slice of User gql type
 						Type: graphql.NewList(User),
 						Args: graphql.FieldConfigArgument{
 							"name": &graphql.ArgumentConfig{

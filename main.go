@@ -21,13 +21,13 @@ func main() {
 func initServer() (gqlServer *server.Server) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error loading env variables: %v", err)
 	}
 
 	dbHostname := os.Getenv("DB_HOSTNAME")
 	dbPort, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error converting DB_PORT env var to int: %v", err)
 	}
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
@@ -37,7 +37,7 @@ func initServer() (gqlServer *server.Server) {
 
 	database, err := db.Create(connString)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error creating the database: %v", err)
 	}
 	gqlSchema := gql.CreateSchema(database)
 	gqlServer = server.Create(&gqlSchema)
