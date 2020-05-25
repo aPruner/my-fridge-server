@@ -7,7 +7,7 @@ import (
 
 func ExecuteGraphQLQuery(query string, schema graphql.Schema) *graphql.Result {
 	result := graphql.Do(graphql.Params{
-		Schema: schema,
+		Schema:        schema,
 		RequestString: query,
 	})
 	if len(result.Errors) > 0 {

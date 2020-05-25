@@ -3,7 +3,6 @@ package gql
 import (
 	"encoding/json"
 	"github.com/graphql-go/graphql"
-	"log"
 	"net/http"
 )
 
@@ -12,7 +11,7 @@ type reqBody struct {
 }
 
 func GraphQLHandler(schema *graphql.Schema) http.HandlerFunc {
-	return func (w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Body == nil {
 			http.Error(w, "Please provide a non-empty GQL query in the request body", 400)
 			return
@@ -28,7 +27,8 @@ func GraphQLHandler(schema *graphql.Schema) http.HandlerFunc {
 		gqlResult := ExecuteGraphQLQuery(rBody.GqlQuery, *schema)
 		err = json.NewEncoder(w).Encode(gqlResult)
 		if err != nil {
-			log.Fatalf("There was an error writing the response: %v", err)
+			http.Error(w, "Error encoding the response, our bad!", 500)
+			return
 		}
 	}
 }
