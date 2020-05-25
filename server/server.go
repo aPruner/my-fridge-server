@@ -3,15 +3,15 @@ package server
 import (
 	"github.com/aPruner/my-fridge-server/gql"
 	"github.com/gorilla/mux"
-	"net/http"
+	"github.com/graphql-go/graphql"
 )
 
 type Server struct {
 	*mux.Router
 }
 
-func Create() *Server {
+func Create(schema *graphql.Schema) *Server {
 	muxRouter := mux.NewRouter()
-	muxRouter.Handle("/graphql", http.HandlerFunc(gql.GraphQLRequestHandler)).Methods("GET", "POST")
+	muxRouter.Handle("/graphql", gql.GraphQLHandler(schema)).Methods("GET", "POST")
 	return &Server{muxRouter}
 }

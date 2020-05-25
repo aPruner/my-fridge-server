@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/aPruner/my-fridge-server/db"
+	"github.com/aPruner/my-fridge-server/gql"
 	"github.com/aPruner/my-fridge-server/server"
 	"github.com/joho/godotenv"
 	"log"
@@ -11,7 +12,7 @@ import (
 )
 
 func main() {
-	// TODO: Add server port and host to .env
+	// TODO: Add server port and host to .env instead of defaulting to localhost:3000
 	gqlServer := initServer()
 
 	log.Fatal(http.ListenAndServe("localhost:3000", gqlServer))
@@ -28,21 +29,17 @@ func initServer() (gqlServer *server.Server) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	// Build the conn string from env vars
 	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbPassword, dbName)
 
 	database, err := db.Create(connString)
-	_ = database
 	if err != nil {
 		log.Fatal(err)
 	}
-	// TODO: Do stuff with the database here (create gql resolver with it)
-
-	gqlServer = server.Create()
+	gqlSchema := gql.CreateSchema(database)
+	gqlServer = server.Create(&gqlSchema)
 	return gqlServer
 }
