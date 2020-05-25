@@ -12,6 +12,17 @@ import (
 )
 
 func main() {
+	// TODO: Add server port and host to .env
+	gqlServer := initServer()
+
+	err := http.ListenAndServe("localhost:3000", gqlServer)
+	if err != nil {
+		log.Fatalf("There was an error starting the server: #{err}")
+	}
+	log.Printf("Server is now listening on port 3000")
+}
+
+func initServer() (gqlServer *server.Server) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -20,7 +31,7 @@ func main() {
 	dbHostname := os.Getenv("DB_HOSTNAME")
 	dbPort, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		log.Fatal("Error converting dbPort")
+		log.Fatalf("Error converting dbPort from string to int: #{err}")
 	}
 
 	dbUser := os.Getenv("DB_USER")
@@ -28,14 +39,14 @@ func main() {
 
 	// Build the conn string from env vars
 	connString := db.BuildConnString(dbHostname, dbPort, dbUser, dbName)
-	fmt.Println(connString)
 
-	gqlServer := server.Create()
-	// TODO: Add server port and host to .env
-	err = http.ListenAndServe("localhost:3000", gqlServer)
+	database, err := db.Create(connString)
+	_ = database
 	if err != nil {
-		log.Fatalf("There was an error starting the server")
+		log.Fatalf("Error creating database: #{err}")
 	}
-	log.Printf("Server is now listening on port 3000")
+	// TODO: Do stuff with the database here (create gql resolver with it)
 
+	gqlServer = server.Create()
+	return gqlServer
 }

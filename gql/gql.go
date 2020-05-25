@@ -17,6 +17,7 @@ func GraphQLRequestHandler(w http.ResponseWriter, r *http.Request)  {
 	log.Printf("Request received, wrote %d bytes to response", bytesWritten)
 }
 
+// TODO: Get rid of this gql boilerplate
 func Test() {
 	// Schema
 	fields := graphql.Fields{
