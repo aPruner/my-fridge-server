@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd db/migrations || exit
 env_vars=$(egrep -v '^#' ../../.env | xargs)
 for env_var in $env_vars
 do
@@ -28,11 +28,12 @@ then
 else
   echo "Please provide an up or down argument to the migrate script, like so:"
   echo
-  echo "  migrate up"
+  echo "  bash migrate.sh up"
   echo
   echo "or"
   echo
-  echo "  migrate down"
+  echo "  bash migrate.sh down"
 fi
+cd ../.. || exit
 
 
