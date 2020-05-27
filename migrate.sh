@@ -1,6 +1,6 @@
 #!/bin/bash
 cd db/migrations || exit
-env_vars=$(egrep -v '^#' ../../.env | xargs)
+env_vars=$(grep -E -v '^#' ../../.env | xargs)
 for env_var in $env_vars
 do
   var_key="${env_var%=*}"
