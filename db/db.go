@@ -9,7 +9,7 @@ type Db struct {
 	*pg.DB
 }
 
-func BuildDbOptions(host string, port string, user string, password string, dbName string) pg.Options {
+func BuildDbOptions(port string, user string, password string, dbName string) pg.Options {
 	return pg.Options{
 		Addr: port,
 		User: user,
@@ -18,12 +18,12 @@ func BuildDbOptions(host string, port string, user string, password string, dbNa
 	}
 }
 
-func Create(options pg.Options) (Db, error) {
+func Create(options pg.Options) (*Db, error) {
 	db := pg.Connect(&options)
 	if err := db.Ping(nil); err != nil {
-		return Db{nil}, err
+		return nil, err
 	}
-	return Db{db}, nil
+	return &Db{db}, nil
 }
 
 func (d *Db) GetUsersByUsername(username string) []User {

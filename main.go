@@ -23,13 +23,12 @@ func initServer() (gqlServer *server.Server) {
 		log.Fatalf("Error loading env variables: %v", err)
 	}
 
-	dbHostname := os.Getenv("DB_HOSTNAME")
 	dbPort := os.Getenv("DB_PORT")
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 
-	connString := db.BuildDbOptions(dbHostname, dbPort, dbUser, dbPassword, dbName)
+	connString := db.BuildDbOptions(dbPort, dbUser, dbPassword, dbName)
 
 	database, err := db.Create(connString)
 	if err != nil {
