@@ -1,55 +1,37 @@
 package db
 
 import (
-	"database/sql"
-	"fmt"
-	_ "github.com/lib/pq"
+	"context"
+	"github.com/go-pg/pg/v10"
 	"log"
 )
 
 type Db struct {
-	*sql.DB
+	*pg.DB
 }
 
-func BuildConnString(host string, port int, user string, password string, dbName string) string {
-	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbName)
-}
-
-func Create(connString string) (*Db, error) {
-	db, err := sql.Open("postgres", connString)
-	if err != nil {
-		return nil, err
+func BuildDbOptions(port string, user string, password string, dbName string) pg.Options {
+	return pg.Options{
+		Addr: port,
+		User: user,
+		Password: password,
+		Database: dbName,
 	}
-	err = db.Ping()
-	if err != nil {
+}
+
+func Create(options pg.Options) (*Db, error) {
+	db := pg.Connect(&options)
+	if err := db.Ping(context.TODO()); err != nil {
 		return nil, err
 	}
 	return &Db{db}, nil
 }
 
 func (d *Db) GetUsersByUsername(username string) []User {
-	sqlStatement, err := d.Prepare("SELECT * FROM users WHERE username=$1")
-	if err != nil {
-		log.Printf("GetUsersByUsername sql prep error: %v", err)
-	}
-
-	rows, err := sqlStatement.Query(username)
-	if err != nil {
-		log.Printf("GetUsersByUsername sql query error: %v", err)
-	}
-
-	var r User
 	var users []User
-	for rows.Next() {
-		err = rows.Scan(
-			&r.ID,
-			&r.Username,
-		)
-		if err != nil {
-			log.Printf("GetUsersByUsername scanning rows error: %v", err)
-		}
-		users = append(users, r)
+	err := d.Model(&users).Where("username = ?", username).Select()
+	if err != nil {
+		log.Printf("There were errors in the GetUsersByUsername query: %v", err)
 	}
 	return users
 }
