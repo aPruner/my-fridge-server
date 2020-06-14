@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"github.com/go-pg/pg/v10"
 	"log"
 )
@@ -20,7 +21,7 @@ func BuildDbOptions(port string, user string, password string, dbName string) pg
 
 func Create(options pg.Options) (*Db, error) {
 	db := pg.Connect(&options)
-	if err := db.Ping(nil); err != nil {
+	if err := db.Ping(context.TODO()); err != nil {
 		return nil, err
 	}
 	return &Db{db}, nil
@@ -28,7 +29,7 @@ func Create(options pg.Options) (*Db, error) {
 
 func (d *Db) GetUsersByUsername(username string) []User {
 	var users []User
-	_, err := d.Query(pg.Scan(&users), "SELECT * FROM users WHERE username=$1", username)
+	err := d.Model(&users).Where("username = ?", username).Select()
 	if err != nil {
 		log.Printf("There were errors in the GetUsersByUsername query: %v", err)
 	}
