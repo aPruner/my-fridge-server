@@ -32,7 +32,6 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 				Name: "Query",
 				Fields: graphql.Fields{
 					"users": &graphql.Field{
-						// Slice of User gql type
 						Type: graphql.NewList(User),
 						Args: graphql.FieldConfigArgument{
 							"username": &graphql.ArgumentConfig{
@@ -40,6 +39,15 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 							},
 						},
 						Resolve: resolver.UserResolver,
+					},
+					"foodItems": &graphql.Field{
+						Type: graphql.NewList(FoodItem),
+						Args: graphql.FieldConfigArgument{
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.FoodItemResolver,
 					},
 				},
 			},

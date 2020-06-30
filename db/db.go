@@ -35,3 +35,12 @@ func (d *Db) GetUsersByUsername(username string) []User {
 	}
 	return users
 }
+
+func (d *Db) GetFoodItemsByHousehold(householdId int) []FoodItem {
+	var foodItems []FoodItem
+	err := d.Model(&foodItems).Where("householdId = ?", householdId).Select()
+	if err != nil {
+		log.Printf("There were errors in the GetFoodItemsByHousehold query: #{err}")
+	}
+	return foodItems
+}

@@ -20,3 +20,14 @@ func (r *Resolver) UserResolver(p graphql.ResolveParams) (interface{}, error) {
 	err := fmt.Errorf("type-checking error: username was not a string")
 	return nil, err
 }
+
+func (r *Resolver) FoodItemResolver(p graphql.ResolveParams) (interface{}, error) {
+	// Type-check the householdId
+	householdId, ok := p.Args["householdId"].(int)
+	if ok {
+		foodItems := r.database.GetFoodItemsByHousehold(householdId)
+		return foodItems, nil
+	}
+	err := fmt.Errorf("type-checking error: householdId was not an int")
+	return nil, err
+}
