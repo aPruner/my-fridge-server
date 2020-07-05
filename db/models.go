@@ -10,3 +10,9 @@ type FoodItem struct {
 	Name     string
 	Category string
 }
+
+type Household struct {
+	ID   int
+	Name string
+	City string
+}

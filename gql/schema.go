@@ -49,6 +49,15 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 						},
 						Resolve: resolver.FoodItemResolver,
 					},
+					"householdId": &graphql.Field{
+						Type: graphql.Int,
+						Args: graphql.FieldConfigArgument{
+							"userId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.HouseholdResolver,
+					},
 				},
 			},
 		),
