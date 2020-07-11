@@ -17,7 +17,7 @@ func (r *Resolver) UserResolver(p graphql.ResolveParams) (interface{}, error) {
 		users := r.database.GetUsersByUsername(username)
 		return users, nil
 	}
-	err := fmt.Errorf("type-checking error: username was not a st3ring")
+	err := fmt.Errorf("type-checking error: username was not a string")
 	return nil, err
 }
 
