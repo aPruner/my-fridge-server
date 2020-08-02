@@ -68,6 +68,7 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 	}
 
 	// Increment the ID
+	// TODO: Maybe just use a serial SQL field for the ID instead?
 	nextId := maxId + 1
 	foodItem := &FoodItem{
 		ID:          nextId,
@@ -76,9 +77,6 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 		Amount:      amount,
 		HouseholdId: householdId,
 	}
-
-	fmt.Println(fmt.Sprintf("householdId is: %d", householdId))
-	fmt.Println(foodItem)
 
 	// Insert the food item
 	err = d.Insert(foodItem)
