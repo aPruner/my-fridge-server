@@ -60,44 +60,32 @@ func (d *Db) GetHouseholdIdByUserId(userId int) (int, error) {
 }
 
 func (d *Db) CreateFoodItem(name string, category string, amount int, householdId int) (int, error) {
-	// First, get the max id so we can increment
-	maxId, err := d.GetNextIdValueForTable("food_items")
-	if err != nil {
-		// Valid ids will always be positive
-		return -1, err
-	}
-
-	// Increment the ID
-	// TODO: Maybe just use a serial SQL field for the ID instead?
-	nextId := maxId + 1
 	foodItem := &FoodItem{
-		ID:          nextId,
 		Name:        name,
 		Category:    category,
 		Amount:      amount,
 		HouseholdId: householdId,
 	}
 
-	// Insert the food item
-	err = d.Insert(foodItem)
+	err := d.Insert(foodItem)
 	if err != nil {
 		log.Print(fmt.Errorf("there was an error in the CreateFoodItem query: %s", err))
 		return -1, err
 	}
 
 	// Assuming all went well, return the Id of the new FoodItem
-	return nextId, nil
+	return foodItem.ID, nil
 }
 
-func (d *Db) GetNextIdValueForTable(tableName string) (int, error) {
-	// TODO: Convert this query to ORM code if possible, this is just a shortcut
-	// TODO: But how do I inject table names (without using a model) with the ORM lib?
-	var maxId int
-	_, err := d.Model().QueryOne(pg.Scan(&maxId), fmt.Sprintf("SELECT id FROM %s ORDER BY id DESC LIMIT 1", tableName))
-	if err != nil {
-		log.Print(fmt.Errorf("there was an error in the GetNextIdValueForTable query: %s", err))
-		return -1, err
-	}
-
-	return maxId, nil
-}
+//func (d *Db) GetNextIdValueForTable(tableName string) (int, error) {
+//	// TODO: Convert this query to ORM code if possible, this is just a shortcut
+//	// TODO: But how do I inject table names (without using a model) with the ORM lib?
+//	var maxId int
+//	_, err := d.Model().QueryOne(pg.Scan(&maxId), fmt.Sprintf("SELECT id FROM %s ORDER BY id DESC LIMIT 1", tableName))
+//	if err != nil {
+//		log.Print(fmt.Errorf("there was an error in the GetNextIdValueForTable query: %s", err))
+//		return -1, err
+//	}
+//
+//	return maxId, nil
+//}
