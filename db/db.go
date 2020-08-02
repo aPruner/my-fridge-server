@@ -76,16 +76,3 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 	// Assuming all went well, return the Id of the new FoodItem
 	return foodItem.ID, nil
 }
-
-//func (d *Db) GetNextIdValueForTable(tableName string) (int, error) {
-//	// TODO: Convert this query to ORM code if possible, this is just a shortcut
-//	// TODO: But how do I inject table names (without using a model) with the ORM lib?
-//	var maxId int
-//	_, err := d.Model().QueryOne(pg.Scan(&maxId), fmt.Sprintf("SELECT id FROM %s ORDER BY id DESC LIMIT 1", tableName))
-//	if err != nil {
-//		log.Print(fmt.Errorf("there was an error in the GetNextIdValueForTable query: %s", err))
-//		return -1, err
-//	}
-//
-//	return maxId, nil
-//}
