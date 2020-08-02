@@ -13,8 +13,8 @@ type Db struct {
 
 func BuildDbOptions(port string, user string, password string, dbName string) pg.Options {
 	return pg.Options{
-		Addr: port,
-		User: user,
+		Addr:     port,
+		User:     user,
 		Password: password,
 		Database: dbName,
 	}
@@ -69,18 +69,19 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 
 	// Increment the ID
 	nextId := maxId + 1
-	foodItem := FoodItem{
-		ID: nextId,
-		Name: name,
-		Category: category,
-		Amount: amount,
+	foodItem := &FoodItem{
+		ID:          nextId,
+		Name:        name,
+		Category:    category,
+		Amount:      amount,
 		HouseholdId: householdId,
 	}
 
-	fmt.Printf("HouseholdId is: %d", householdId)
+	fmt.Println(fmt.Sprintf("householdId is: %d", householdId))
+	fmt.Println(foodItem)
 
 	// Insert the food item
-	err = d.Insert(&foodItem)
+	err = d.Insert(foodItem)
 	if err != nil {
 		log.Print(fmt.Errorf("there was an error in the CreateFoodItem query: %s", err))
 		return -1, err
