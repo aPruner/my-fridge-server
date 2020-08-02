@@ -1,10 +1,10 @@
 package server
 
 import (
-	"github.com/aPruner/my-fridge-server/gql"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/handler"
 	"net/http"
 	"os"
 )
@@ -16,9 +16,16 @@ type Server struct {
 func Create(schema *graphql.Schema) *Server {
 	muxRouter := mux.NewRouter()
 
+	// Build handler
+	gqlHandler := handler.New(&handler.Config{
+		Schema: schema,
+		Pretty: true,
+		GraphiQL: true,
+	})
+
 	// Apply middleware
-	gqlHandler := ApplyMiddlewarePipeline(gql.GraphQLHandler(schema))
-	muxRouter.Handle("/graphql", gqlHandler).Methods("GET", "POST")
+	h := ApplyMiddlewarePipeline(gqlHandler)
+	muxRouter.Handle("/graphql", h).Methods("GET", "POST")
 	return &Server{muxRouter}
 }
 
