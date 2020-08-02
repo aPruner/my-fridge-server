@@ -6,16 +6,23 @@ import (
 	"log"
 )
 
+// May not need these types but for now they are here for clarity
 type BaseQuery struct {
 	Query *graphql.Object
 }
 
+type BaseMutation struct {
+	Mutation *graphql.Object
+}
+
 func CreateSchema(database *db.Db) graphql.Schema {
-	baseQuery := NewBaseQuery(database)
+	baseQuery := CreateBaseQuery(database)
+	baseMutation := CreateBaseMutation(database)
 
 	schema, err := graphql.NewSchema(
 		graphql.SchemaConfig{
 			Query: baseQuery.Query,
+			Mutation: baseMutation.Mutation,
 		},
 	)
 	if err != nil {
@@ -24,7 +31,7 @@ func CreateSchema(database *db.Db) graphql.Schema {
 	return schema
 }
 
-func NewBaseQuery(database *db.Db) *BaseQuery {
+func CreateBaseQuery(database *db.Db) *BaseQuery {
 	resolver := Resolver{database: database}
 	baseQuery := BaseQuery{
 		Query: graphql.NewObject(
@@ -38,7 +45,7 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 								Type: graphql.String,
 							},
 						},
-						Resolve: resolver.UserResolver,
+						Resolve: resolver.UserQueryResolver,
 					},
 					"foodItems": &graphql.Field{
 						Type: graphql.NewList(FoodItem),
@@ -47,7 +54,7 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 								Type: graphql.Int,
 							},
 						},
-						Resolve: resolver.FoodItemResolver,
+						Resolve: resolver.FoodItemQueryResolver,
 					},
 					"householdId": &graphql.Field{
 						Type: graphql.Int,
@@ -56,11 +63,43 @@ func NewBaseQuery(database *db.Db) *BaseQuery {
 								Type: graphql.Int,
 							},
 						},
-						Resolve: resolver.HouseholdResolver,
+						Resolve: resolver.HouseholdQueryResolver,
 					},
 				},
 			},
 		),
 	}
 	return &baseQuery
+}
+
+func CreateBaseMutation(database *db.Db) *BaseMutation {
+	resolver := Resolver{database}
+	baseMutation := BaseMutation{
+		Mutation: graphql.NewObject(
+			graphql.ObjectConfig{
+				Name: "Mutation",
+				Fields: graphql.Fields{
+					"createFoodItem": &graphql.Field{
+						Type: FoodItem,
+						Args: graphql.FieldConfigArgument{
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
+							},
+							"category": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
+							},
+							"amount": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.FoodItemMutationResolver,
+					},
+				},
+			},
+		),
+	}
+	return &baseMutation
 }

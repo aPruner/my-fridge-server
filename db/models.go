@@ -6,9 +6,11 @@ type User struct {
 }
 
 type FoodItem struct {
-	ID       int
-	Name     string
-	Category string
+	ID          int
+	Name        string
+	Category    string
+	Amount      int
+	HouseholdId int
 }
 
 type Household struct {
