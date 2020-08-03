@@ -95,7 +95,35 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.Int,
 							},
 						},
-						Resolve: resolver.FoodItemMutationResolver,
+						Resolve: resolver.CreateFoodItemMutationResolver,
+					},
+					"deleteFoodItem": &graphql.Field{
+						Type: FoodItem,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+					},
+					"updateFoodItem": &graphql.Field{
+						Type: FoodItem,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
+							},
+							"category": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
+							},
+							"amount": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
 					},
 				},
 			},

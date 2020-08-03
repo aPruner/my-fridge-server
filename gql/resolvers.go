@@ -52,7 +52,7 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams)  (interface{}
 	return nil, err
 }
 
-func (r *Resolver) FoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
+func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
 	name, nameOk := p.Args["name"].(string)
 	category, categoryOk := p.Args["category"].(string)
 	amount, amountOk := p.Args["amount"].(int)
@@ -64,6 +64,15 @@ func (r *Resolver) FoodItemMutationResolver(p graphql.ResolveParams)  (interface
 		}
 		return newFoodItemId, nil
 	}
-	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and household_id was misformed")
+	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
 	return nil, err
 }
+
+// TODO: Write these resolvers
+//func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
+//
+//}
+
+//func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
+//
+//}
