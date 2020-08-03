@@ -91,7 +91,7 @@ func (d *Db) DeleteFoodItem(id int) error {
 }
 
 func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
-	// TODO: Figure out how to do optional arguments to the GQL mutations
+	// TODO: Figure out how to do optional arguments for the GQL mutations
 	foodItem := &FoodItem{
 		ID: id,
 		Name: p.Args["name"].(string),
