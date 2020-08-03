@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/aPruner/my-fridge-server/db"
 	"github.com/graphql-go/graphql"
+	"log"
 )
 
 type Resolver struct {
@@ -21,6 +22,7 @@ func (r *Resolver) UserQueryResolver(p graphql.ResolveParams) (interface{}, erro
 		return users, nil
 	}
 	err := fmt.Errorf("type-checking error: username was not a string")
+	log.Print(err)
 	return nil, err
 }
 
@@ -35,10 +37,11 @@ func (r *Resolver) FoodItemQueryResolver(p graphql.ResolveParams) (interface{}, 
 		return foodItems, nil
 	}
 	err := fmt.Errorf("type-checking error: householdId was not an int")
+	log.Print(err)
 	return nil, err
 }
 
-func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams)  (interface{}, error) {
+func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	// Type-check the userId
 	userId, ok := p.Args["userId"].(int)
 	if ok {
@@ -49,10 +52,11 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams)  (interface{}
 		return householdId, nil
 	}
 	err := fmt.Errorf("type-checking error: userId was not an int")
+	log.Print(err)
 	return nil, err
 }
 
-func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
+func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
 	name, nameOk := p.Args["name"].(string)
 	category, categoryOk := p.Args["category"].(string)
 	amount, amountOk := p.Args["amount"].(int)
@@ -65,14 +69,36 @@ func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams)  (int
 		return newFoodItemId, nil
 	}
 	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
+	log.Print(err)
 	return nil, err
 }
 
-// TODO: Write these resolvers
-//func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
-//
-//}
+func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
+	id, ok := p.Args["id"].(int)
+	var err error
+	if ok {
+		err = r.database.DeleteFoodItem(id)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+	err = fmt.Errorf("type-checking error: id was not an int")
+	log.Print(err)
+	return nil, err
+}
 
-//func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams)  (interface{}, error) {
-//
-//}
+func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
+	id, ok := p.Args["id"].(int)
+	var err error
+	if ok {
+		err = r.database.UpdateFoodItem(id, p)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+	err = fmt.Errorf("type-checking error: id was not an int")
+	log.Print(err)
+	return nil, err
+}

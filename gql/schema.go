@@ -104,9 +104,13 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.Int,
 							},
 						},
+						Resolve: resolver.DeleteFoodItemMutationResolver,
 					},
 					"updateFoodItem": &graphql.Field{
 						Type: FoodItem,
+						// TODO: Figure out how to do optional arguments to the GQL mutations
+						// TODO: Ideally, the caller should be able to update whichever fields they want, not be
+						// TODO: forced to update all of them at once
 						Args: graphql.FieldConfigArgument{
 							"id": &graphql.ArgumentConfig{
 								Type: graphql.Int,
@@ -124,6 +128,7 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.Int,
 							},
 						},
+						Resolve: resolver.UpdateFoodItemMutationResolver,
 					},
 				},
 			},

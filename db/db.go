@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-pg/pg/v10"
+	"github.com/graphql-go/graphql"
 	"log"
 )
 
@@ -75,4 +76,34 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 
 	// Assuming all went well, return the Id of the new FoodItem
 	return foodItem.ID, nil
+}
+
+func (d *Db) DeleteFoodItem(id int) error {
+	foodItem := &FoodItem{
+		ID: id,
+	}
+	err := d.Delete(foodItem)
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the DeleteFoodItem query: %s", err))
+		return err
+	}
+	return nil
+}
+
+func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
+	// TODO: Figure out how to do optional arguments to the GQL mutations
+	foodItem := &FoodItem{
+		ID: id,
+		Name: p.Args["name"].(string),
+		Category: p.Args["category"].(string),
+		Amount: p.Args["amount"].(int),
+		HouseholdId: p.Args["householdId"].(int),
+	}
+
+	err := d.Update(foodItem)
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the UpdateFoodItem query: %s", err))
+		return err
+	}
+	return nil
 }
