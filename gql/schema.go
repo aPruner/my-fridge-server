@@ -21,7 +21,7 @@ func CreateSchema(database *db.Db) graphql.Schema {
 
 	schema, err := graphql.NewSchema(
 		graphql.SchemaConfig{
-			Query: baseQuery.Query,
+			Query:    baseQuery.Query,
 			Mutation: baseMutation.Mutation,
 		},
 	)

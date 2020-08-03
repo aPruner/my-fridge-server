@@ -18,8 +18,8 @@ func Create(schema *graphql.Schema) *Server {
 
 	// Build handler
 	gqlHandler := handler.New(&handler.Config{
-		Schema: schema,
-		Pretty: true,
+		Schema:   schema,
+		Pretty:   true,
 		GraphiQL: true,
 	})
 
