@@ -14,8 +14,8 @@ func main() {
 	// TODO: Add server port and host to .env instead of defaulting to localhost:3000
 	gqlServer := initServer()
 
-	log.Printf("Server created, now listening at localhost:3000")
-	log.Fatal(http.ListenAndServe("localhost:3000", gqlServer))
+	log.Printf("Server created, now listening at localhost:8080")
+	log.Fatal(http.ListenAndServe("localhost:8080", gqlServer))
 }
 
 func initServer() (gqlServer *server.Server) {
