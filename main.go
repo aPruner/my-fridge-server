@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/aPruner/my-fridge-server/db"
-	"github.com/aPruner/my-fridge-server/gql"
-	"github.com/aPruner/my-fridge-server/server"
+	"github.com/aPruner/my-fridge-server/app/db"
+	"github.com/aPruner/my-fridge-server/app/gql"
+	"github.com/aPruner/my-fridge-server/app/server"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"

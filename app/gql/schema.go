@@ -1,7 +1,7 @@
 package gql
 
 import (
-	"github.com/aPruner/my-fridge-server/db"
+	"github.com/aPruner/my-fridge-server/app/db"
 	"github.com/graphql-go/graphql"
 	"log"
 )
