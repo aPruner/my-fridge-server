@@ -1,40 +1,36 @@
 version: '3'
 services:
-  app:
-    container_name: myfridge
-    build: .
-    ports:
-      - "8080:8080"
-    restart: on-failure
+  db:
     volumes:
-      - api:/usr/src/app/
-    depends_on:
-      - myfridge-postgres
-    networks:
-      - myfridge
-
-
-  myfridge-postgres:
-    image: postgres:latest
-    container_name: myfridge_db_postgres
+      - ./db/pgdata:/pgdata
+    image: postgres
+    ports:
+      - "5432"
+    restart: always
     environment:
-     - POSTGRES_USER=${DB_USER}
-     - POSTGRES_PASSWORD=${DB_PASSWORD}
-     - POSTGRES_DB=${DB_NAME}
-     - DATABASE_HOST=${DB_HOSTNAME}
+      - POSTGRES_USER=user
+      - POSTGRES_DB=dbname
+      - POSTGRES_PASSWORD=123
+      - PGDATA=/pgdata
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-     - "5432:5432"
-    volumes:
-     - database_postgres:/var/lib/postgresql/data
-    networks:
-     - myfridge
+      - 8081:8080
+    depends_on:
+      - db
 
-
-volumes:
   api:
-  database_postgres:
-
-# Networks to be created to facilitate communication between containers
-networks:
-  myfridge:
-    driver: bridge
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=dbname
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
