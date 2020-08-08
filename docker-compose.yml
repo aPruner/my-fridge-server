@@ -22,7 +22,7 @@ services:
       - db
     environment:
       - DB_HOSTNAME=db
-    restart: always
+    restart: on-failure
 
   adminer:
     image: adminer
@@ -38,7 +38,7 @@ services:
       dockerfile: app.Dockerfile
     restart: always
     ports:
-      - 8080:8080
+      - 3000:8080
     depends_on:
       - migrations
       - db

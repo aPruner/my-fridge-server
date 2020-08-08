@@ -11,11 +11,12 @@ import (
 )
 
 func main() {
-	// TODO: Add server port and host to .env instead of defaulting to localhost:3000
+	// TODO: Add server port and host to .env instead of defaulting to localhost:8080
 	gqlServer := initServer()
 
 	log.Printf("Server created, now listening at localhost:8080")
-	log.Fatal(http.ListenAndServe("localhost:8080", gqlServer))
+	// TODO: make documentation for why hostname has to be 0.0.0.0 for docker
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", gqlServer))
 }
 
 func initServer() (gqlServer *server.Server) {
