@@ -12,17 +12,10 @@ import (
 )
 
 func main() {
-	// TODO: Add server port and host to .env instead of defaulting to localhost:8080
 	gqlServer := initServer()
-
+	serverEnv := os.Getenv("SERVER_ENV")
+	serverHost := os.Getenv(fmt.Sprintf("SERVER_HOST_%s", serverEnv))
 	log.Printf("Server created, now listening at localhost:8080")
-	// TODO: make documentation for why hostname has to be 0.0.0.0 for docker
-	var serverHost string
-	if serverEnv := os.Getenv("SERVER_ENV"); serverEnv == "LOCAL" {
-		serverHost = os.Getenv("SERVER_HOST_LOCAL")
-	} else if serverEnv == "DOCKER" {
-		serverHost = os.Getenv("SERVER_HOST_DOCKER")
-	}
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:8080", serverHost), gqlServer))
 }
 
