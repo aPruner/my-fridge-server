@@ -16,4 +16,4 @@ do
     dbname_val=$var_val
   fi
 done
-echo "CREATE DATABASE ${dbname_val}; CREATE USER ${user_val} WITH ENCRYPTED PASSWORD '${password_val}'; GRANT ALL PRIVILEGES ON DATABASE ${dbname_val} to ${user_val};" | sudo -u postgres psql postgres
+echo "CREATE DATABASE ${dbname_val}; CREATE USER ${user_val} WITH ENCRYPTED PASSWORD '${password_val}'; GRANT ALL PRIVILEGES ON DATABASE ${dbname_val} to ${user_val}; ALTER USER ${user_val} WITH SUPERUSER;" | sudo -u postgres psql postgres
