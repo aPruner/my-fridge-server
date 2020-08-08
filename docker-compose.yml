@@ -3,14 +3,14 @@ services:
   db:
     image: postgres
     volumes:
-      - dbvol:/pgdata
+      - dbvol:/var/lib/postgresql/data
     ports:
       - "5432"
     restart: always
     environment:
-      - POSTGRES_USER=adam
+      - POSTGRES_USER=admin
       - POSTGRES_DB=myfridge
-      - POSTGRES_PASSWORD=adminpass1234
+      - POSTGRES_PASSWORD=adminfridge
 
   migrations:
     build:
@@ -43,11 +43,11 @@ services:
       - migrations
       - db
     environment:
-      - DB_USER=adam
+      - DB_USER=admin
       - DB_NAME=myfridge
-      - DB_PASSWORD=adminpass1234
+      - DB_PASSWORD=adminfridge
       - DB_HOSTNAME=db
       - DB_PORT=5432
 
 volumes:
-  dbvol:
+  dbvol: {}
