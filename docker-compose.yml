@@ -18,8 +18,10 @@ services:
       dockerfile: migrations.Dockerfile
     depends_on:
       - db
+    links:
+      - db
     environment:
-      - POSTGRES_HOST=db
+      - DB_HOSTNAME=db
     restart: always
 
   adminer:

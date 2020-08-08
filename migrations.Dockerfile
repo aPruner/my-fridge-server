@@ -5,6 +5,8 @@ FROM golang:alpine
 RUN apk update && apk add build-base
 RUN apk update && apk add --no-cache git
 
+# Get goose
 RUN go get -u github.com/pressly/goose/cmd/goose
 
-CMD ["goose", "postgres", "user=adam password=adminpass1234 dbname=myfridge sslmode=disable", "up"]
+# Run the migrations
+CMD ["sh", "-c", "goose postgres \"host=${DB_HOSTNAME}:5432 user=postgres password=adminpass1234 dbname=myfridge sslmode=disable\" up"]
