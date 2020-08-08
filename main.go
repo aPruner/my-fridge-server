@@ -28,8 +28,9 @@ func initServer() (gqlServer *server.Server) {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
+	dbHost := os.Getenv("DB_HOSTNAME")
 
-	connString := db.BuildDbOptions(dbPort, dbUser, dbPassword, dbName)
+	connString := db.BuildDbOptions(dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	database, err := db.Create(connString)
 	if err != nil {

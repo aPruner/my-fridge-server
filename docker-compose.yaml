@@ -1,9 +1,9 @@
 version: '3'
 services:
   db:
+    image: postgres
     volumes:
       - dbvol:/pgdata
-    image: postgres
     ports:
       - "5432"
     restart: always
@@ -18,15 +18,17 @@ services:
       dockerfile: migrations.Dockerfile
     depends_on:
       - db
-    restart: on-failure
+    environment:
+      - POSTGRES_HOST=db
+    restart: always
 
   adminer:
     image: adminer
-    restart: always
     ports:
       - 8081:8080
     depends_on:
       - db
+    restart: always
 
   app:
     build:
@@ -39,11 +41,11 @@ services:
       - migrations
       - db
     environment:
-      - POSTGRES_USER=adam
-      - POSTGRES_DB=myfridge
-      - POSTGRES_PASSWORD=adminpass1234
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
+      - DB_USER=adam
+      - DB_NAME=myfridge
+      - DB_PASSWORD=adminpass1234
+      - DB_HOSTNAME=db
+      - DB_PORT=5432
 
 volumes:
   dbvol:
