@@ -21,6 +21,9 @@ services:
     links:
       - db
     environment:
+      - DB_USER=admin
+      - DB_NAME=myfridge
+      - DB_PASSWORD=adminfridge
       - DB_HOSTNAME=db
     restart: on-failure
 

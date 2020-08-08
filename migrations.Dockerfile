@@ -12,4 +12,4 @@ RUN go get -u github.com/pressly/goose/cmd/goose
 COPY . .
 
 # Run the migrations
-CMD ["sh", "-c", "goose -dir=app/db/migrations postgres \"host=${DB_HOSTNAME} user=admin password=adminfridge dbname=myfridge sslmode=disable\" up"]
+CMD ["sh", "-c", "goose -dir=app/db/migrations postgres \"host=${DB_HOSTNAME} user=${DB_USER} password=${DB_PASSWORD} dbname=${DB_NAME} sslmode=disable\" up"]
