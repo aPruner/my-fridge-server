@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/aPruner/my-fridge-server/db"
-	"github.com/aPruner/my-fridge-server/gql"
-	"github.com/aPruner/my-fridge-server/server"
+	"fmt"
+	"github.com/aPruner/my-fridge-server/app/db"
+	"github.com/aPruner/my-fridge-server/app/gql"
+	"github.com/aPruner/my-fridge-server/app/server"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -11,11 +12,11 @@ import (
 )
 
 func main() {
-	// TODO: Add server port and host to .env instead of defaulting to localhost:3000
 	gqlServer := initServer()
-
-	log.Printf("Server created, now listening at localhost:3000")
-	log.Fatal(http.ListenAndServe("localhost:3000", gqlServer))
+	serverEnv := os.Getenv("SERVER_ENV")
+	serverHost := os.Getenv(fmt.Sprintf("SERVER_HOST_%s", serverEnv))
+	log.Printf("Server created, now listening at localhost:8080")
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:8080", serverHost), gqlServer))
 }
 
 func initServer() (gqlServer *server.Server) {
@@ -28,8 +29,9 @@ func initServer() (gqlServer *server.Server) {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
+	dbHost := os.Getenv("DB_HOSTNAME")
 
-	connString := db.BuildDbOptions(dbPort, dbUser, dbPassword, dbName)
+	connString := db.BuildDbOptions(dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	database, err := db.Create(connString)
 	if err != nil {

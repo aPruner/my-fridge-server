@@ -1,6 +1,6 @@
 #!/bin/bash
-cd db/migrations || exit
-env_vars=$(grep -E -v '^#' ../../.env | xargs)
+cd app/db/migrations || exit
+env_vars=$(grep -E -v '^#' ../../../.env | xargs)
 for env_var in $env_vars
 do
   var_key="${env_var%=*}"
@@ -25,14 +25,16 @@ then
 elif [ "$1" = "down" ]
 then
   goose postgres "${conn_string}" down
+elif [ "$1" = "reset" ]
+then
+  goose postgres "${conn_string}" reset
 else
-  echo "Please provide an up or down argument to the migrate script, like so:"
-  echo
+  echo "Please provide an argument to the migrate script, like so:"
   echo "  bash migrate.sh up"
-  echo
   echo "or"
-  echo
   echo "  bash migrate.sh down"
+  echo "or"
+  echo "  bash migrate.sh reset"
 fi
 cd ../.. || exit
 

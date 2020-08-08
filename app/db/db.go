@@ -12,9 +12,9 @@ type Db struct {
 	*pg.DB
 }
 
-func BuildDbOptions(port string, user string, password string, dbName string) pg.Options {
+func BuildDbOptions(host string, port string, user string, password string, dbName string) pg.Options {
 	return pg.Options{
-		Addr:     port,
+		Addr:     fmt.Sprintf("%s:%s", host, port),
 		User:     user,
 		Password: password,
 		Database: dbName,

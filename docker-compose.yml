@@ -1,0 +1,59 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - dbvol:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=myfridge
+      - POSTGRES_PASSWORD=adminfridge
+
+  migrations:
+    build:
+      context: .
+      dockerfile: migrations.Dockerfile
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - DB_USER=admin
+      - DB_NAME=myfridge
+      - DB_PASSWORD=adminfridge
+      - DB_HOSTNAME=db
+    restart: on-failure
+
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    restart: always
+    ports:
+      - 3000:8080
+    depends_on:
+      - migrations
+      - db
+    environment:
+      - DB_USER=admin
+      - DB_NAME=myfridge
+      - DB_PASSWORD=adminfridge
+      - DB_HOSTNAME=db
+      - DB_PORT=5432
+      - SERVER_ENV=DOCKER
+      - SERVER_ENV_DOCKER=0.0.0.0
+      - SERVER_ENV_LOCAL=localhost
+
+volumes:
+  dbvol: {}
