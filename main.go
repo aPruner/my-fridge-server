@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/aPruner/my-fridge-server/app/db"
 	"github.com/aPruner/my-fridge-server/app/gql"
 	"github.com/aPruner/my-fridge-server/app/server"
@@ -16,7 +17,13 @@ func main() {
 
 	log.Printf("Server created, now listening at localhost:8080")
 	// TODO: make documentation for why hostname has to be 0.0.0.0 for docker
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", gqlServer))
+	var serverHost string
+	if serverEnv := os.Getenv("SERVER_ENV"); serverEnv == "LOCAL" {
+		serverHost = os.Getenv("SERVER_HOST_LOCAL")
+	} else if serverEnv == "DOCKER" {
+		serverHost = os.Getenv("SERVER_HOST_DOCKER")
+	}
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:8080", serverHost), gqlServer))
 }
 
 func initServer() (gqlServer *server.Server) {

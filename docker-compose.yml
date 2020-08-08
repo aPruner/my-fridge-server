@@ -51,6 +51,9 @@ services:
       - DB_PASSWORD=adminfridge
       - DB_HOSTNAME=db
       - DB_PORT=5432
+      - SERVER_ENV=DOCKER
+      - SERVER_ENV_DOCKER=0.0.0.0
+      - SERVER_ENV_LOCAL=localhost
 
 volumes:
   dbvol: {}
