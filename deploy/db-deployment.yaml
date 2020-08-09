@@ -32,6 +32,9 @@ spec:
           value: adminfridge
         - name: POSTGRES_USER
           value: admin
+        # TODO: FIX THIS PGDATA WORKAROUND FOR POSTGRES DB, I THINK THIS WILL REMAKE THE DB WHENEVER I REDEPLOY THE CONTAINER (that being said, shouldn't have to do it often, also, it doesn't really matter until I have real users!)
+        - name: PGDATA
+          value: /tmp
         image: postgres
         imagePullPolicy: ""
         name: db
