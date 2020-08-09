@@ -1,7 +1,7 @@
 # Deploying the app (to GCP K8s Engine Cluster)
 
 ## Prerequisites:
-- Kubernetes cli (`kubectl`): [Installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+- Kubernetes cli (`kubectl`): [Installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - Docker cli (`docker` and `docker-compose`): [Installation guide for docker](https://docs.docker.com/get-docker/), [installation guide for docker-compose](https://docs.docker.com/compose/install/)
 - Kompose cli (`kompose`) - only required if there are changes made to the `docker-compose.yml` and so `deploy/*.yaml` files need to be regenerated: [Installation guide](https://kompose.io/setup/)
 
