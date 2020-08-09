@@ -3,7 +3,7 @@
 ## Prerequisites:
 - Kubernetes cli (`kubectl`): [Installation guide](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 - Docker cli (`docker` and `docker-compose`): [Installation guide for docker](https://docs.docker.com/get-docker/), [installation guide for docker-compose](https://docs.docker.com/compose/install/)
-- Kompose cli (`kompose`) - only required if there are changes made to the `docker-compose.yml`: [Installation guide](https://kompose.io/setup/)
+- Kompose cli (`kompose`) - only required if there are changes made to the `docker-compose.yml` and so `deploy/*.yaml` files need to be regenerated: [Installation guide](https://kompose.io/setup/)
 
 ## Follow these steps: (TODO: AUTOMATE THIS with a shell script or CI/CD deployment pipeline)
 1. Checkout master branch that is ready to deploy, pull in new changes
@@ -14,8 +14,9 @@
     2. Run `docker tag <base-image-name> <gcp-container-registry-hostname>/<gcp-project-id>/<new-image-name>:<optional-tag>`
     3. Run `docker push <new-image-name> <gcp-container-registry-hostname>/<gcp-project-id>/<new-image-name>:<optional-tag>`
     (Note: ideally I will bump versions with each deploy/release, but I'm not sure at which step this should happen. Maybe before step 1, and then when I tag the image)
-4. Ensure `kubectl` current-context (can check with `kubectl get current-context`) is set to the GCP cluster [Guide on this here](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl) (TODO: AUTOMATE THIS)
-5. Bring up deployments, services, and pods in the correct order (TODO: AUTOMATE THIS)
+4. If there are changes to the `docker-compose.yml`, mirror them in the appropriate `deploy/*.yaml` file. Running `kompose convert` to regenerate the `.yaml` files might be necessary in some rare cases
+5. Ensure `kubectl` current-context (can check with `kubectl get current-context`) is set to the GCP cluster [Guide on this here](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl) (TODO: AUTOMATE THIS)
+6. Bring up deployments, services, and pods in the correct order (TODO: AUTOMATE THIS)
   For now, this will look like:
     1. Run `kubectl apply -f adminer-service.yaml,adminer-deployment.yaml,db-service.yaml,db-deployment.yaml,dbvol-persistentvolumeclaim.yaml` to deploy the db and adminer services
     2. Wait a bit, confirm in GCP that the db and adminer services deployed successfully and are OK, maybe grab a drink
