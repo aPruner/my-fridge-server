@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+      - env:
+        - name: DB_HOSTNAME
+          value: db
+        - name: DB_NAME
+          value: myfridge
+        - name: DB_PASSWORD
+          value: adminfridge
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: admin
+        - name: SERVER_ENV
+          value: DOCKER
+        - name: SERVER_ENV_DOCKER
+          value: 0.0.0.0
+        - name: SERVER_ENV_LOCAL
+          value: localhost
+        image: adampruner/my-fridge-server:dev
+        imagePullPolicy: ""
+        name: app
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
