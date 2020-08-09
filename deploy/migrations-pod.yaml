@@ -16,7 +16,7 @@ spec:
       value: adminfridge
     - name: DB_USER
       value: admin
-    image: migrations
+    image: adampruner/my-fridge-server-migrations:dev
     name: migrations
     resources: {}
   restartPolicy: OnFailure
