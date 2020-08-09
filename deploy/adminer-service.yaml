@@ -9,6 +9,7 @@ metadata:
     io.kompose.service: adminer
   name: adminer
 spec:
+  type: NodePort
   ports:
   - name: "8081"
     port: 8081
