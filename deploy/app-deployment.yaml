@@ -41,7 +41,7 @@ spec:
           value: 0.0.0.0
         - name: SERVER_ENV_LOCAL
           value: localhost
-        image: app
+        image: adampruner/my-fridge-server:dev
         imagePullPolicy: ""
         name: app
         ports:
