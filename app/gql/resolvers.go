@@ -57,12 +57,16 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{},
 }
 
 func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
+	// TODO: Figure out optional params here
 	name, nameOk := p.Args["name"].(string)
 	category, categoryOk := p.Args["category"].(string)
 	amount, amountOk := p.Args["amount"].(int)
 	householdId, householdIdOk := p.Args["householdId"].(int)
-	if nameOk && categoryOk && amountOk && householdIdOk {
-		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId)
+	userId, userIdOk := p.Args["userId"].(int)
+
+	if nameOk && categoryOk && amountOk && householdIdOk && userIdOk {
+		// TODO: In these cases, the server should probably throw a 400 bad request
+		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId, userId)
 		if err != nil {
 			return nil, err
 		}

@@ -11,6 +11,7 @@ type FoodItem struct {
 	Category    string
 	Amount      int
 	HouseholdId int `sql:"household_id"`
+	UserId      int `sql:"user_id"`
 }
 
 type Household struct {
