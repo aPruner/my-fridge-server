@@ -56,14 +56,32 @@ func CreateBaseQuery(database *db.Db) *BaseQuery {
 						},
 						Resolve: resolver.FoodItemQueryResolver,
 					},
-					"householdId": &graphql.Field{
+					"householdIds": &graphql.Field{
 						Type: graphql.Int,
 						Args: graphql.FieldConfigArgument{
 							"userId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 						},
+						Resolve: resolver.HouseholdIdQueryResolver,
+					},
+					"households": &graphql.Field{
+						Type: graphql.NewList(Household),
+						Args: graphql.FieldConfigArgument{
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
 						Resolve: resolver.HouseholdQueryResolver,
+					},
+					"shoppingLists": &graphql.Field{
+						Type: graphql.NewList(ShoppingList),
+						Args: graphql.FieldConfigArgument{
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.ShoppingListQueryResolver,
 					},
 				},
 			},
@@ -129,6 +147,57 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							},
 						},
 						Resolve: resolver.UpdateFoodItemMutationResolver,
+					},
+					"createShoppingList": &graphql.Field{
+						Type: ShoppingList,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"userId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
+							"createdAt": &graphql.ArgumentConfig{
+								Type: graphql.DateTime,
+							},
+						},
+						Resolve: resolver.CreateShoppingListResolver,
+					},
+					"updateShoppingList": &graphql.Field{
+						Type: ShoppingList,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"userId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"householdId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
+							"createdAt": &graphql.ArgumentConfig{
+								Type: graphql.DateTime,
+							},
+						},
+						Resolve: resolver.UpdateShoppingListResolver,
+					},
+					"deleteShoppingList": &graphql.Field{
+						Type: ShoppingList,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.DeleteShoppingListResolver,
 					},
 				},
 			},

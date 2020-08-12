@@ -19,3 +19,7 @@ type Household struct {
 	Name string
 	City string
 }
+
+type ShoppingList struct {
+
+}

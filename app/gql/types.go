@@ -40,3 +40,43 @@ var FoodItem = graphql.NewObject(
 		},
 	},
 )
+
+var Household = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "Household",
+		Fields: graphql.Fields{
+			"id": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"name": &graphql.Field{
+				Type: graphql.String,
+			},
+			"city": &graphql.Field{
+				Type: graphql.String,
+			},
+		},
+	},
+)
+
+var ShoppingList = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "ShoppingList",
+		Fields: graphql.Fields{
+			"id": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"userId": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"householdId": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"name": &graphql.Field{
+				Type: graphql.String,
+			},
+			"createdAt": &graphql.Field{
+				Type: graphql.DateTime,
+			},
+		},
+	},
+)

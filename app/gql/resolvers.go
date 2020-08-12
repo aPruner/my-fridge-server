@@ -41,7 +41,7 @@ func (r *Resolver) FoodItemQueryResolver(p graphql.ResolveParams) (interface{}, 
 	return nil, err
 }
 
-func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{}, error) {
+func (r *Resolver) HouseholdIdQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	// Type-check the userId
 	userId, ok := p.Args["userId"].(int)
 	if ok {
@@ -53,6 +53,16 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{},
 	}
 	err := fmt.Errorf("type-checking error: userId was not an int")
 	log.Print(err)
+	return nil, err
+}
+
+func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{}, error) {
+	err := fmt.Errorf("type-checking error: params were invalid")
+	return nil, err
+}
+
+func (r *Resolver) ShoppingListQueryResolver(p graphql.ResolveParams) (interface{}, error) {
+	err := fmt.Errorf("type-checking error: params were invalid")
 	return nil, err
 }
 
@@ -104,5 +114,20 @@ func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	}
 	err = fmt.Errorf("type-checking error: id was not an int")
 	log.Print(err)
+	return nil, err
+}
+
+func (r *Resolver) CreateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
+	err := fmt.Errorf("type-checking error: params were invalid")
+	return nil, err
+}
+
+func (r *Resolver) UpdateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
+	err := fmt.Errorf("type-checking error: params were invalid")
+	return nil, err
+}
+
+func (r *Resolver) DeleteShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
+	err := fmt.Errorf("type-checking error: params were invalid")
 	return nil, err
 }
