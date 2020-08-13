@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=adminfridge
 
   migrations:
-    image: adampruner/my-fridge-server-migrations:dev
+    image: adampruner/my-fridge-server-migrations
     build:
       context: .
       dockerfile: migrations.Dockerfile
@@ -37,7 +37,7 @@ services:
     restart: always
 
   app:
-    image: adampruner/my-fridge-server:dev
+    image: adampruner/my-fridge-server
     build:
       context: .
       dockerfile: app.Dockerfile

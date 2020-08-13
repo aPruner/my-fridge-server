@@ -10,8 +10,8 @@
 2. Ensure the go app compiles and runs locally with `bash start.sh` and there are no breaking changes
 3. Build, tag, and push docker images to google cloud container repository
   For now (until this is automated), this step will look like the following:
-    1. Run `docker --compose up --build` to build the new images (for each of adminer, postgres, adampruner/my-fridge-server:dev, adampruner/my-fridge-server-migrations:dev)
-    2. Run `docker tag <base-image-name> <gcp-container-registry-hostname>/<gcp-project-id>/<new-image-name>:<optional-tag>`
+    1. Run `docker-compose up --build` to build the new images (this will build and start running locally all of adminer, postgres, adampruner/my-fridge-server, adampruner/my-fridge-server-migrations)
+    2. Run `docker tag <base-image-name> <gcp-container-registry-hostname>/<gcp-project-id>/<new-image-name>:<optional-tag>`, for both the adampruner/my-fridge-server and adampruner/my-fridge-server-migrations base image names
     3. Run `docker push <new-image-name> <gcp-container-registry-hostname>/<gcp-project-id>/<new-image-name>:<optional-tag>`
     (Note: ideally I will bump versions with each deploy/release, but I'm not sure at which step this should happen. Maybe before step 1, and then when I tag the image)
 4. If there are changes to the `docker-compose.yml`, mirror them in the appropriate `deploy/*.yaml` file. Running `kompose convert` to regenerate the `.yaml` files might be necessary in some rare cases
