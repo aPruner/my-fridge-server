@@ -113,6 +113,7 @@ func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams) (inte
 		if err != nil {
 			return nil, err
 		}
+		// TODO: Proper graphql convention is to return the deleted row (FoodItem)
 		return nil, nil
 	}
 	err = fmt.Errorf("type-checking error: id was not an int")
@@ -163,6 +164,7 @@ func (r *Resolver) DeleteShoppingListResolver(p graphql.ResolveParams) (interfac
 		if err != nil {
 			return nil, err
 		}
+		// TODO: Proper graphql convention is to return the deleted row (ShoppingList)
 		return nil, nil
 	}
 	err = fmt.Errorf("type-checking error: id was not an int")

@@ -108,6 +108,7 @@ func (d *Db) DeleteFoodItem(id int) error {
 		log.Print(fmt.Errorf("there was an error in the DeleteFoodItem query: %s", err))
 		return err
 	}
+	// TODO: Proper graphql convention is to return the deleted row (FoodItem)
 	return nil
 }
 
@@ -154,5 +155,6 @@ func (d *Db) DeleteShoppingList(id int) error {
 		log.Print(fmt.Errorf("there was an error in the DeleteShoppingList query: %s", err))
 		return err
 	}
+	// TODO: Proper graphql convention is to return the deleted row (ShoppingList)
 	return nil
 }
