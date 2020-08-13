@@ -56,11 +56,13 @@ func (r *Resolver) HouseholdIdQueryResolver(p graphql.ResolveParams) (interface{
 	return nil, err
 }
 
+// TODO: Implement this
 func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	err := fmt.Errorf("type-checking error: params were invalid")
 	return nil, err
 }
 
+// TODO: Implement this
 func (r *Resolver) ShoppingListQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	err := fmt.Errorf("type-checking error: params were invalid")
 	return nil, err
@@ -75,7 +77,6 @@ func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	userId, userIdOk := p.Args["userId"].(int)
 
 	if nameOk && categoryOk && amountOk && householdIdOk && userIdOk {
-		// TODO: In these cases, the server should probably throw a 400 bad request
 		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId, userId)
 		if err != nil {
 			return nil, err
@@ -83,6 +84,23 @@ func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 		return newFoodItemId, nil
 	}
 	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
+	log.Print(err)
+	// TODO: In these cases, the server should probably throw a 400 bad request
+	return nil, err
+}
+
+func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
+	id, ok := p.Args["id"].(int)
+	var err error
+	if ok {
+		err = r.database.UpdateFoodItem(id, p)
+		if err != nil {
+			return nil, err
+		}
+		// TODO: Maybe should return the updated FoodItem instead?
+		return nil, nil
+	}
+	err = fmt.Errorf("type-checking error: id was not an int")
 	log.Print(err)
 	return nil, err
 }
@@ -102,14 +120,34 @@ func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	return nil, err
 }
 
-func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams) (interface{}, error) {
-	id, ok := p.Args["id"].(int)
-	var err error
-	if ok {
-		err = r.database.UpdateFoodItem(id, p)
+func (r *Resolver) CreateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
+	// TODO: Figure out optional params here
+	name, nameOk := p.Args["name"].(string)
+	householdId, householdIdOk := p.Args["householdId"].(int)
+	userId, userIdOk := p.Args["userId"].(int)
+
+	if nameOk && householdIdOk && userIdOk {
+		newFoodItemId, err := r.database.CreateShoppingList(userId, householdId, name)
 		if err != nil {
 			return nil, err
 		}
+		return newFoodItemId, nil
+	}
+	// TODO: In these cases, the server should probably throw a 400 bad request
+	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
+	log.Print(err)
+	return nil, err
+}
+
+func (r *Resolver) UpdateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
+	id, ok := p.Args["id"].(int)
+	var err error
+	if ok {
+		err = r.database.UpdateShoppingList(id, p)
+		if err != nil {
+			return nil, err
+		}
+		// TODO: Maybe should return the updated ShoppingList instead?
 		return nil, nil
 	}
 	err = fmt.Errorf("type-checking error: id was not an int")
@@ -117,17 +155,17 @@ func (r *Resolver) UpdateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	return nil, err
 }
 
-func (r *Resolver) CreateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
-	err := fmt.Errorf("type-checking error: params were invalid")
-	return nil, err
-}
-
-func (r *Resolver) UpdateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
-	err := fmt.Errorf("type-checking error: params were invalid")
-	return nil, err
-}
-
 func (r *Resolver) DeleteShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
-	err := fmt.Errorf("type-checking error: params were invalid")
+	id, ok := p.Args["id"].(int)
+	var err error
+	if ok {
+		err = r.database.DeleteShoppingList(id)
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
+	}
+	err = fmt.Errorf("type-checking error: id was not an int")
+	log.Print(err)
 	return nil, err
 }
