@@ -64,7 +64,17 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{},
 
 // TODO: Implement this
 func (r *Resolver) ShoppingListQueryResolver(p graphql.ResolveParams) (interface{}, error) {
-	err := fmt.Errorf("type-checking error: params were invalid")
+	householdId, ok := p.Args["householdId"].(int)
+	if ok {
+		shoppingLists, err := r.database.GetShoppingListsByHouseholdId(householdId)
+		if err != nil {
+			return nil, err
+		}
+		return shoppingLists, nil
+	}
+
+	err := fmt.Errorf("type-checking error: householdId was not an int")
+	log.Print(err)
 	return nil, err
 }
 

@@ -112,6 +112,16 @@ func (d *Db) DeleteFoodItem(id int) error {
 	return nil
 }
 
+func (d *Db) GetShoppingListsByHouseholdId(householdId int) ([]ShoppingList, error) {
+	var shoppingLists []ShoppingList
+	err := d.Model(&shoppingLists).Where("household_id = ?", householdId).Select()
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the GetShoppingListsByHouseholdId query: %s", err))
+		return shoppingLists, err
+	}
+	return shoppingLists, nil
+}
+
 func (d *Db) CreateShoppingList(userId int, householdId int, name string) (int, error) {
 	currentTime := time.Now()
 	createdAt := currentTime.Format(time.RFC3339)
