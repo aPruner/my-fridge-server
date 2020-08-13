@@ -61,13 +61,13 @@ func (d *Db) GetHouseholdIdByUserId(userId int) (int, error) {
 	return household.ID, nil
 }
 
-func (d *Db) CreateFoodItem(name string, category string, amount int, householdId int, userId int) (int, error) {
+func (d *Db) CreateFoodItem(name string, category string, amount int, householdId int, shoppingListId int) (int, error) {
 	foodItem := &FoodItem{
-		Name:        name,
-		Category:    category,
-		Amount:      amount,
-		HouseholdId: householdId,
-		UserId:      userId,
+		Name:           name,
+		Category:       category,
+		Amount:         amount,
+		HouseholdId:    householdId,
+		ShoppingListId: shoppingListId,
 	}
 
 	err := d.Insert(foodItem)
@@ -83,12 +83,12 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
 	// TODO: Figure out how to do optional arguments for the GQL mutations
 	foodItem := &FoodItem{
-		ID:          id,
-		Name:        p.Args["name"].(string),
-		Category:    p.Args["category"].(string),
-		Amount:      p.Args["amount"].(int),
-		HouseholdId: p.Args["householdId"].(int),
-		UserId:      p.Args["userId"].(int),
+		ID:             id,
+		Name:           p.Args["name"].(string),
+		Category:       p.Args["category"].(string),
+		Amount:         p.Args["amount"].(int),
+		HouseholdId:    p.Args["householdId"].(int),
+		ShoppingListId: p.Args["shoppingListId"].(int),
 	}
 
 	err := d.Update(foodItem)
@@ -114,11 +114,11 @@ func (d *Db) DeleteFoodItem(id int) error {
 func (d *Db) CreateShoppingList(userId int, householdId int, name string) (int, error) {
 	currentTime := time.Now()
 	createdAt := currentTime.Format(time.RFC3339)
-	shoppingList := ShoppingList{
-		Name: name,
-		UserId: userId,
+	shoppingList := &ShoppingList{
+		Name:        name,
+		UserId:      userId,
 		HouseholdId: householdId,
-		CreatedAt: createdAt,
+		CreatedAt:   createdAt,
 	}
 
 	err := d.Insert(shoppingList)

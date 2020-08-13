@@ -112,17 +112,11 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
-						},
-						Resolve: resolver.CreateFoodItemMutationResolver,
-					},
-					"deleteFoodItem": &graphql.Field{
-						Type: FoodItem,
-						Args: graphql.FieldConfigArgument{
-							"id": &graphql.ArgumentConfig{
+							"shoppingListId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 						},
-						Resolve: resolver.DeleteFoodItemMutationResolver,
+						Resolve: resolver.CreateFoodItemMutationResolver,
 					},
 					"updateFoodItem": &graphql.Field{
 						Type: FoodItem,
@@ -145,8 +139,20 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
+							"shoppingListId": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
 						},
 						Resolve: resolver.UpdateFoodItemMutationResolver,
+					},
+					"deleteFoodItem": &graphql.Field{
+						Type: FoodItem,
+						Args: graphql.FieldConfigArgument{
+							"id": &graphql.ArgumentConfig{
+								Type: graphql.Int,
+							},
+						},
+						Resolve: resolver.DeleteFoodItemMutationResolver,
 					},
 					"createShoppingList": &graphql.Field{
 						Type: ShoppingList,

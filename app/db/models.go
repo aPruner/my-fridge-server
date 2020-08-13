@@ -6,12 +6,12 @@ type User struct {
 }
 
 type FoodItem struct {
-	ID          int
-	Name        string
-	Category    string
-	Amount      int
-	HouseholdId int `sql:"household_id"`
-	UserId      int `sql:"user_id"`
+	ID             int
+	Name           string
+	Category       string
+	Amount         int
+	HouseholdId    int `sql:"household_id"`
+	ShoppingListId int `sql:"shopping_list_id"`
 }
 
 type Household struct {

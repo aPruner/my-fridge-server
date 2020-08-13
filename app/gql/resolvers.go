@@ -74,16 +74,16 @@ func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	category, categoryOk := p.Args["category"].(string)
 	amount, amountOk := p.Args["amount"].(int)
 	householdId, householdIdOk := p.Args["householdId"].(int)
-	userId, userIdOk := p.Args["userId"].(int)
+	shoppingListId, shoppingListIdOk := p.Args["shoppingListId"].(int)
 
-	if nameOk && categoryOk && amountOk && householdIdOk && userIdOk {
-		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId, userId)
+	if nameOk && categoryOk && amountOk && householdIdOk && shoppingListIdOk {
+		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId, shoppingListId)
 		if err != nil {
 			return nil, err
 		}
 		return newFoodItemId, nil
 	}
-	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
+	err := fmt.Errorf("type-checking error: a combination of name, category, amount, householdId, and shoppingListId was misformed")
 	log.Print(err)
 	// TODO: In these cases, the server should probably throw a 400 bad request
 	return nil, err

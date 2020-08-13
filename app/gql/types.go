@@ -37,6 +37,9 @@ var FoodItem = graphql.NewObject(
 			"householdId": &graphql.Field{
 				Type: graphql.Int,
 			},
+			"userId": &graphql.Field{
+				Type: graphql.Int,
+			},
 		},
 	},
 )
