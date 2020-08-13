@@ -137,7 +137,7 @@ func (d *Db) UpdateShoppingList(id int, p graphql.ResolveParams) error {
 		UserId:      p.Args["userId"].(int),
 	}
 
-	err := d.Update(shoppingList)
+	_, err := d.Model(shoppingList).Set("name = ?name, household_id = ?household_id, user_id = ?user_id").Where("id = ?id").Update()
 	if err != nil {
 		log.Print(fmt.Errorf("there was an error in the UpdateFoodItem query: %s", err))
 		return err
