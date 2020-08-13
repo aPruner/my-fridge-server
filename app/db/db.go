@@ -6,6 +6,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/graphql-go/graphql"
 	"log"
+	"time"
 )
 
 type Db struct {
@@ -79,18 +80,6 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, householdI
 	return foodItem.ID, nil
 }
 
-func (d *Db) DeleteFoodItem(id int) error {
-	foodItem := &FoodItem{
-		ID: id,
-	}
-	err := d.Delete(foodItem)
-	if err != nil {
-		log.Print(fmt.Errorf("there was an error in the DeleteFoodItem query: %s", err))
-		return err
-	}
-	return nil
-}
-
 func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
 	// TODO: Figure out how to do optional arguments for the GQL mutations
 	foodItem := &FoodItem{
@@ -105,6 +94,64 @@ func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
 	err := d.Update(foodItem)
 	if err != nil {
 		log.Print(fmt.Errorf("there was an error in the UpdateFoodItem query: %s", err))
+		return err
+	}
+	return nil
+}
+
+func (d *Db) DeleteFoodItem(id int) error {
+	foodItem := &FoodItem{
+		ID: id,
+	}
+	err := d.Delete(foodItem)
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the DeleteFoodItem query: %s", err))
+		return err
+	}
+	return nil
+}
+
+func (d *Db) CreateShoppingList(userId int, householdId int, name string) (int, error) {
+	currentTime := time.Now()
+	createdAt := currentTime.Format(time.RFC3339)
+	shoppingList := ShoppingList{
+		Name: name,
+		UserId: userId,
+		HouseholdId: householdId,
+		CreatedAt: createdAt,
+	}
+
+	err := d.Insert(shoppingList)
+	if err != nil {
+		return -1, err
+	}
+	return shoppingList.ID, nil
+}
+
+func (d *Db) UpdateShoppingList(id int, p graphql.ResolveParams) error {
+	// TODO: Figure out how to do optional arguments for the GQL mutations
+	shoppingList := &ShoppingList{
+		ID:          id,
+		Name:        p.Args["name"].(string),
+		HouseholdId: p.Args["householdId"].(int),
+		UserId:      p.Args["userId"].(int),
+	}
+
+	err := d.Update(shoppingList)
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the UpdateFoodItem query: %s", err))
+		return err
+	}
+	return nil
+}
+
+func (d *Db) DeleteShoppingList(id int) error {
+	shoppingList := &ShoppingList{
+		ID: id,
+	}
+	err := d.Delete(shoppingList)
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the DeleteShoppingList query: %s", err))
 		return err
 	}
 	return nil
