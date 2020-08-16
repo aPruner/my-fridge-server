@@ -109,6 +109,9 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							"amount": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
+							"unit": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
+							},
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
@@ -135,6 +138,9 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							},
 							"amount": &graphql.ArgumentConfig{
 								Type: graphql.Int,
+							},
+							"unit": &graphql.ArgumentConfig{
+								Type: graphql.NewNonNull(graphql.String),
 							},
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
