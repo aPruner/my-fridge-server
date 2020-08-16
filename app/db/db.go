@@ -61,11 +61,12 @@ func (d *Db) GetHouseholdIdByUserId(userId int) (int, error) {
 	return household.ID, nil
 }
 
-func (d *Db) CreateFoodItem(name string, category string, amount int, householdId int, shoppingListId int) (int, error) {
+func (d *Db) CreateFoodItem(name string, category string, amount int, unit string, householdId int, shoppingListId int) (int, error) {
 	foodItem := &FoodItem{
 		Name:           name,
 		Category:       category,
 		Amount:         amount,
+		Unit:           unit,
 		HouseholdId:    householdId,
 		ShoppingListId: shoppingListId,
 	}
@@ -87,6 +88,7 @@ func (d *Db) UpdateFoodItem(id int, p graphql.ResolveParams) error {
 		Name:           p.Args["name"].(string),
 		Category:       p.Args["category"].(string),
 		Amount:         p.Args["amount"].(int),
+		Unit:           p.Args["unit"].(string),
 		HouseholdId:    p.Args["householdId"].(int),
 		ShoppingListId: p.Args["shoppingListId"].(int),
 	}

@@ -83,11 +83,12 @@ func (r *Resolver) CreateFoodItemMutationResolver(p graphql.ResolveParams) (inte
 	name, nameOk := p.Args["name"].(string)
 	category, categoryOk := p.Args["category"].(string)
 	amount, amountOk := p.Args["amount"].(int)
+	unit, unitOk := p.Args["unit"].(string)
 	householdId, householdIdOk := p.Args["householdId"].(int)
 	shoppingListId, shoppingListIdOk := p.Args["shoppingListId"].(int)
 
-	if nameOk && categoryOk && amountOk && householdIdOk && shoppingListIdOk {
-		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, householdId, shoppingListId)
+	if nameOk && categoryOk && amountOk && unitOk && householdIdOk && shoppingListIdOk {
+		newFoodItemId, err := r.database.CreateFoodItem(name, category, amount, unit, householdId, shoppingListId)
 		if err != nil {
 			return nil, err
 		}
