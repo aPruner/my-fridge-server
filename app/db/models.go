@@ -10,6 +10,7 @@ type FoodItem struct {
 	Name           string
 	Category       string
 	Amount         int
+	Unit           string
 	HouseholdId    int `sql:"household_id"`
 	ShoppingListId int `sql:"shopping_list_id"`
 }
