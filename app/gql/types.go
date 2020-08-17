@@ -71,14 +71,17 @@ var ShoppingList = graphql.NewObject(
 			"id": &graphql.Field{
 				Type: graphql.Int,
 			},
+			"name": &graphql.Field{
+				Type: graphql.String,
+			},
+			"description": &graphql.Field{
+				Type: graphql.String,
+			},
 			"userId": &graphql.Field{
 				Type: graphql.Int,
 			},
 			"householdId": &graphql.Field{
 				Type: graphql.Int,
-			},
-			"name": &graphql.Field{
-				Type: graphql.String,
 			},
 			"createdAt": &graphql.Field{
 				Type: graphql.DateTime,

@@ -135,18 +135,19 @@ func (r *Resolver) DeleteFoodItemMutationResolver(p graphql.ResolveParams) (inte
 func (r *Resolver) CreateShoppingListResolver(p graphql.ResolveParams) (interface{}, error) {
 	// TODO: Figure out optional params here
 	name, nameOk := p.Args["name"].(string)
-	householdId, householdIdOk := p.Args["householdId"].(int)
+	description, descriptionOk := p.Args["description"].(string)
 	userId, userIdOk := p.Args["userId"].(int)
+	householdId, householdIdOk := p.Args["householdId"].(int)
 
-	if nameOk && householdIdOk && userIdOk {
-		newFoodItemId, err := r.database.CreateShoppingList(userId, householdId, name)
+	if nameOk && descriptionOk && householdIdOk && userIdOk {
+		newFoodItemId, err := r.database.CreateShoppingList(name, description, userId, householdId)
 		if err != nil {
 			return nil, err
 		}
 		return newFoodItemId, nil
 	}
 	// TODO: In these cases, the server should probably throw a 400 bad request
-	err := fmt.Errorf("type-checking error: a combination of name, category, amount, and householdId was misformed")
+	err := fmt.Errorf("type-checking error: a combination of name, description, category, amount, and householdId was misformed")
 	log.Print(err)
 	return nil, err
 }

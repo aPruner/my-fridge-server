@@ -163,17 +163,17 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 					"createShoppingList": &graphql.Field{
 						Type: ShoppingList,
 						Args: graphql.FieldConfigArgument{
-							"id": &graphql.ArgumentConfig{
-								Type: graphql.Int,
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
+							"description": &graphql.ArgumentConfig{
+								Type: graphql.String,
 							},
 							"userId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
-							},
-							"name": &graphql.ArgumentConfig{
-								Type: graphql.String,
 							},
 							"createdAt": &graphql.ArgumentConfig{
 								Type: graphql.DateTime,
@@ -187,14 +187,17 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 							"id": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
+							"name": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
+							"description": &graphql.ArgumentConfig{
+								Type: graphql.String,
+							},
 							"userId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
-							},
-							"name": &graphql.ArgumentConfig{
-								Type: graphql.String,
 							},
 							"createdAt": &graphql.ArgumentConfig{
 								Type: graphql.DateTime,
