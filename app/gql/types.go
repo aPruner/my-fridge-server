@@ -84,7 +84,7 @@ var ShoppingList = graphql.NewObject(
 				Type: graphql.Int,
 			},
 			"createdAt": &graphql.Field{
-				Type: graphql.DateTime,
+				Type: graphql.String,
 			},
 		},
 	},

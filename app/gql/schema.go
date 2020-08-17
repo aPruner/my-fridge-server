@@ -104,19 +104,19 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.NewNonNull(graphql.String),
 							},
 							"category": &graphql.ArgumentConfig{
-								Type: graphql.NewNonNull(graphql.String),
+								Type: graphql.String,
 							},
 							"amount": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 							"unit": &graphql.ArgumentConfig{
-								Type: graphql.NewNonNull(graphql.String),
+								Type: graphql.String,
 							},
 							"householdId": &graphql.ArgumentConfig{
-								Type: graphql.Int,
+								Type: graphql.NewNonNull(graphql.Int),
 							},
 							"shoppingListId": &graphql.ArgumentConfig{
-								Type: graphql.Int,
+								Type: graphql.NewNonNull(graphql.Int),
 							},
 						},
 						Resolve: resolver.CreateFoodItemMutationResolver,
@@ -131,16 +131,16 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.Int,
 							},
 							"name": &graphql.ArgumentConfig{
-								Type: graphql.NewNonNull(graphql.String),
+								Type: graphql.String,
 							},
 							"category": &graphql.ArgumentConfig{
-								Type: graphql.NewNonNull(graphql.String),
+								Type: graphql.String,
 							},
 							"amount": &graphql.ArgumentConfig{
 								Type: graphql.Int,
 							},
 							"unit": &graphql.ArgumentConfig{
-								Type: graphql.NewNonNull(graphql.String),
+								Type: graphql.String,
 							},
 							"householdId": &graphql.ArgumentConfig{
 								Type: graphql.Int,
@@ -164,19 +164,16 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 						Type: ShoppingList,
 						Args: graphql.FieldConfigArgument{
 							"name": &graphql.ArgumentConfig{
-								Type: graphql.String,
+								Type: graphql.NewNonNull(graphql.String),
 							},
 							"description": &graphql.ArgumentConfig{
 								Type: graphql.String,
 							},
 							"userId": &graphql.ArgumentConfig{
-								Type: graphql.Int,
+								Type: graphql.NewNonNull(graphql.Int),
 							},
 							"householdId": &graphql.ArgumentConfig{
-								Type: graphql.Int,
-							},
-							"createdAt": &graphql.ArgumentConfig{
-								Type: graphql.DateTime,
+								Type: graphql.NewNonNull(graphql.Int),
 							},
 						},
 						Resolve: resolver.CreateShoppingListResolver,
@@ -200,7 +197,7 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 								Type: graphql.Int,
 							},
 							"createdAt": &graphql.ArgumentConfig{
-								Type: graphql.DateTime,
+								Type: graphql.String,
 							},
 						},
 						Resolve: resolver.UpdateShoppingListResolver,
