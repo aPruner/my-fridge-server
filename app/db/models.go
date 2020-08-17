@@ -24,6 +24,7 @@ type Household struct {
 type ShoppingList struct {
 	ID          int
 	Name        string
+	Description string
 	UserId      int    `sql:"user_id"`
 	HouseholdId int    `sql:"household_id"`
 	CreatedAt   string `sql:"created_at"`

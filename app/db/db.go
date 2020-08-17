@@ -124,11 +124,12 @@ func (d *Db) GetShoppingListsByHouseholdId(householdId int) ([]ShoppingList, err
 	return shoppingLists, nil
 }
 
-func (d *Db) CreateShoppingList(userId int, householdId int, name string) (int, error) {
+func (d *Db) CreateShoppingList(name string, description string, userId int, householdId int) (int, error) {
 	currentTime := time.Now()
 	createdAt := currentTime.Format(time.RFC3339)
 	shoppingList := &ShoppingList{
 		Name:        name,
+		Description: description,
 		UserId:      userId,
 		HouseholdId: householdId,
 		CreatedAt:   createdAt,
@@ -146,11 +147,12 @@ func (d *Db) UpdateShoppingList(id int, p graphql.ResolveParams) error {
 	shoppingList := &ShoppingList{
 		ID:          id,
 		Name:        p.Args["name"].(string),
+		Description: p.Args["description"].(string),
 		HouseholdId: p.Args["householdId"].(int),
 		UserId:      p.Args["userId"].(int),
 	}
 
-	_, err := d.Model(shoppingList).Set("name = ?name, household_id = ?household_id, user_id = ?user_id").Where("id = ?id").Update()
+	_, err := d.Model(shoppingList).Set("name = ?name, description = ?description, household_id = ?household_id, user_id = ?user_id").Where("id = ?id").Update()
 	if err != nil {
 		log.Print(fmt.Errorf("there was an error in the UpdateFoodItem query: %s", err))
 		return err
