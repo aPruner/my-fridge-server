@@ -28,7 +28,7 @@ func (r *Resolver) UserQueryResolver(p graphql.ResolveParams) (interface{}, erro
 
 func (r *Resolver) FoodItemsQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	// Type-check the potential arguments
-	foodItemsInput, ok := p.Args["foodItemsInput"].(map[string]interface{})
+	foodItemsInput, ok := p.Args["foodItemsQueryInput"].(map[string]interface{})
 	var err error
 	if ok {
 		householdId, householdIdOk := foodItemsInput["householdId"].(int)
@@ -77,7 +77,6 @@ func (r *Resolver) HouseholdQueryResolver(p graphql.ResolveParams) (interface{},
 	return nil, err
 }
 
-// TODO: Implement this
 func (r *Resolver) ShoppingListQueryResolver(p graphql.ResolveParams) (interface{}, error) {
 	householdId, ok := p.Args["householdId"].(int)
 	if ok {
