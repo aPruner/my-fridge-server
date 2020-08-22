@@ -50,6 +50,16 @@ func (d *Db) GetFoodItemsByHouseholdId(householdId int) ([]FoodItem, error) {
 	return foodItems, nil
 }
 
+func (d *Db) GetFoodItemsByShoppingListId(shoppingListId int) ([]FoodItem, error) {
+	var foodItems []FoodItem
+	err := d.Model(&foodItems).Where("shopping_list_id = ?", shoppingListId).Select()
+	if err != nil {
+		log.Print(fmt.Errorf("there was an error in the GetFoodItemsByShoppingListId query: %s", err))
+		return foodItems, err
+	}
+	return foodItems, nil
+}
+
 func (d *Db) GetHouseholdIdByUserId(userId int) (int, error) {
 	var household Household
 	err := d.Model(&household).Where("userId = ?", userId).Select()
