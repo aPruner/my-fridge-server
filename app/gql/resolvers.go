@@ -26,17 +26,32 @@ func (r *Resolver) UserQueryResolver(p graphql.ResolveParams) (interface{}, erro
 	return nil, err
 }
 
-func (r *Resolver) FoodItemQueryResolver(p graphql.ResolveParams) (interface{}, error) {
-	// Type-check the householdId
-	householdId, ok := p.Args["householdId"].(int)
+func (r *Resolver) FoodItemsQueryResolver(p graphql.ResolveParams) (interface{}, error) {
+	// Type-check the potential arguments
+	foodItemsInput, ok := p.Args["foodItemsInput"].(map[string]interface{})
+	var err error
 	if ok {
-		foodItems, err := r.database.GetFoodItemsByHouseholdId(householdId)
-		if err != nil {
+		householdId, householdIdOk := foodItemsInput["householdId"].(int)
+		shoppingListId, shoppingListIdOk := foodItemsInput["shoppingListId"].(int)
+		if householdIdOk && shoppingListIdOk {
+			err = fmt.Errorf("type-checking error: please provide only one of householdId or shoppingListId")
+			log.Print(err)
 			return nil, err
+		} else if householdIdOk {
+			foodItems, err := r.database.GetFoodItemsByHouseholdId(householdId)
+			if err != nil {
+				return nil, err
+			}
+			return foodItems, nil
+		} else if shoppingListIdOk {
+			foodItems, err := r.database.GetFoodItemsByShoppingListId(shoppingListId)
+			if err != nil {
+				return nil, err
+			}
+			return foodItems, nil
 		}
-		return foodItems, nil
 	}
-	err := fmt.Errorf("type-checking error: householdId was not an int")
+	err = fmt.Errorf("type-checking error: please provide a valid foodItemsInput object (one of householdId and shoppingListId non-null)")
 	log.Print(err)
 	return nil, err
 }

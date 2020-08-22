@@ -50,11 +50,11 @@ func CreateBaseQuery(database *db.Db) *BaseQuery {
 					"foodItems": &graphql.Field{
 						Type: graphql.NewList(FoodItem),
 						Args: graphql.FieldConfigArgument{
-							"householdId": &graphql.ArgumentConfig{
-								Type: graphql.Int,
+							"foodItemsInput": &graphql.ArgumentConfig{
+								Type: CreateFoodItemInput(),
 							},
 						},
-						Resolve: resolver.FoodItemQueryResolver,
+						Resolve: resolver.FoodItemsQueryResolver,
 					},
 					"householdIds": &graphql.Field{
 						Type: graphql.Int,
@@ -216,4 +216,21 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 		),
 	}
 	return &baseMutation
+}
+
+func CreateFoodItemInput() *graphql.InputObject {
+	return graphql.NewInputObject(
+		graphql.InputObjectConfig{
+			Name: "foodItemInput",
+			Fields: graphql.InputObjectConfigFieldMap{
+				"householdId": &graphql.InputObjectFieldConfig{
+					Type: graphql.Int,
+				},
+				"shoppingListId": &graphql.InputObjectFieldConfig{
+					Type: graphql.Int,
+				},
+			},
+			Description: "Input for the food item query, either a householdId or a shoppingListId",
+		},
+	)
 }
