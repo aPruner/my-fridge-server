@@ -221,7 +221,7 @@ func CreateBaseMutation(database *db.Db) *BaseMutation {
 func CreateFoodItemsQueryInput() *graphql.InputObject {
 	return graphql.NewInputObject(
 		graphql.InputObjectConfig{
-			Name: "foodItemInput",
+			Name: "FoodItemsQueryInput",
 			Fields: graphql.InputObjectConfigFieldMap{
 				"householdId": &graphql.InputObjectFieldConfig{
 					Type: graphql.Int,
