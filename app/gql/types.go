@@ -43,6 +43,9 @@ var FoodItem = graphql.NewObject(
 			"shoppingListId": &graphql.Field{
 				Type: graphql.Int,
 			},
+			"createdAt": &graphql.Field{
+				Type: graphql.String,
+			},
 		},
 	},
 )
