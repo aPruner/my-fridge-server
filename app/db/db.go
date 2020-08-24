@@ -72,6 +72,8 @@ func (d *Db) GetHouseholdIdByUserId(userId int) (int, error) {
 }
 
 func (d *Db) CreateFoodItem(name string, category string, amount int, unit string, householdId int, shoppingListId int) (int, error) {
+	currentTime := time.Now()
+	createdAt := currentTime.Format(time.RFC3339)
 	foodItem := &FoodItem{
 		Name:           name,
 		Category:       category,
@@ -79,6 +81,7 @@ func (d *Db) CreateFoodItem(name string, category string, amount int, unit strin
 		Unit:           unit,
 		HouseholdId:    householdId,
 		ShoppingListId: shoppingListId,
+		CreatedAt:      createdAt,
 	}
 
 	err := d.Insert(foodItem)
