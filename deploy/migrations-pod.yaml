@@ -16,7 +16,7 @@ spec:
       value: adminfridge
     - name: DB_USER
       value: admin
-    image: us.gcr.io/myfridge-280304/adampruner/my-fridge-server-migrations:0.1
+    image: us.gcr.io/myfridge-280304/adampruner/my-fridge-server-migrations:0.2
     name: migrations
     resources: {}
   restartPolicy: OnFailure
